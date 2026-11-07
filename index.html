@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Александр Бро</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow-x: hidden;
+      
+      /* ПЕРЕЛИВАЮЩИЙСЯ ГРАДИЕНТ */
+      background: linear-gradient(-45deg, #2b1055, #753a88, #c4348c, #ff4b8b);
+      background-size: 300% 300%;
+      animation: gradientBG 8s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- НАВИГАЦИЯ СВЕРХУ --- */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      background: rgba(15, 15, 25, 0.4);
+      padding: 6px;
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 500px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover { color: #fff; }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(15, 15, 25, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 34px 28px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    h1 {
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-bottom: 25px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* --- ВКЛАДКИ --- */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- СТИЛИ ДЛЯ ФОРМЫ ВОПРОСОВ --- */
+    .question-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    
+    .random-nick-box {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      border: 1px dashed rgba(255,255,255,0.3);
+      margin-bottom: 5px;
+    }
+    .random-nick-box strong { color: #25F4EE; }
+
+    .question-form textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .question-form textarea:focus {
+      border-color: #c4348c;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #229ED9, #1b87bb);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 24px rgba(34,158,217,0.4);
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(34,158,217,0.6);
+    }
+    .submit-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Кнопки соцсетей */
+    .links { display: flex; flex-direction: column; gap: 12px; }
+    .btn {
+      display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 20px;
+      font-size: 1.05rem; font-weight: 600; color: #fff; text-decoration: none;
+      border-radius: 14px; transition: transform 0.15s, box-shadow 0.2s;
+      text-align: left; position: relative; overflow: hidden;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn svg, .btn img { width: 28px; height: 28px; flex-shrink: 0; object-fit: cover; }
+    .btn-text { display: flex; flex-direction: column; }
+    .btn-text small { font-weight: 400; font-size: 0.78rem; opacity: 0.8; }
+
+    .btn-tiktok { background: #010101; border: 1px solid rgba(255,255,255,0.18); }
+    .btn-twitch { background: #9146FF; }
+    .btn-tg { background: #229ED9; }
+    .btn-donate { background: linear-gradient(135deg, #FF512F, #DD2476); border: 1px solid rgba(255, 255, 255, 0.3); }
+    .btn-donate img { width: 36px; height: 36px; border-radius: 8px; }
+    .btn-roblox { background: #E2231A; justify-content: center; }
+    .btn-rust { background: linear-gradient(135deg, #CD412B, #8B2917); justify-content: center; }
+
+    .info-text { font-size: 0.95rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9); text-align: left; margin-bottom: 20px; }
+    .info-text p { margin-bottom: 15px; }
+
+    footer { position: relative; z-index: 1; margin-top: 28px; font-size: 0.8rem; opacity: 0.8; }
+
+    @media (max-width: 480px) {
+      .card { padding: 25px 18px; }
+      h1 { font-size: 1.8rem; }
+      .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЕЕ МЕНЮ -->
+  <div class="nav-tabs">
+    <button class="nav-btn active" onclick="openTab('channels', this)">1. Каналы</button>
+    <button class="nav-btn" onclick="openTab('info', this)">2. Инфо</button>
+    <button class="nav-btn" onclick="openTab('content', this)">3. Что снимаю</button>
+    <button class="nav-btn" onclick="openTab('ask', this)">4. Вопрос</button>
+  </div>
+
+  <main class="card">
+    <h1>Александр Бро</h1>
+    <p class="subtitle">Официальный сайт</p>
+
+    <!-- ВКЛАДКА 1: КАНАЛЫ -->
+    <div id="channels" class="tab-content active">
+      <div class="links">
+        <a class="btn btn-tiktok" href="https://www.tiktok.com/@7ldack?_r=1&_t=ZS-9B84IYcGJJE" target="_blank">
+          <svg viewBox="0 0 24 24"><path fill="#25F4EE" d="M16.6 5.82a4.5 4.5 0 0 1-2.74-1.32 4.5 4.5 0 0 1-1.28-2.5h-3.1v13.1a2.66 2.66 0 0 1-2.66 2.6 2.66 2.66 0 1 1 0-5.32c.28 0 .55.04.8.12V9.4a5.8 5.8 0 0 0-.8-.06 5.72 5.72 0 1 0 5.72 5.72V8.9a7.6 7.6 0 0 0 4.06 1.16V6.96a4.6 4.6 0 0 1-2.8-1.14z"/><path fill="#FE2C55" opacity="0.85" d="M18.1 8.9a7.6 7.6 0 0 1-4.06-1.16v6.16a5.72 5.72 0 1 1-5.72-5.72c.28 0 .55.02.8.06v3.42a2.66 2.66 0 1 0 2.66 2.6V2h3.1a4.5 4.5 0 0 0 1.28 2.5A4.5 4.5 0 0 0 18.9 5.8v3.1z"/><path fill="#fff" d="M16.6 5.82a4.5 4.5 0 0 1-2.74-1.32 4.5 4.5 0 0 1-1.28-2.5h-3.1v13.1a2.66 2.66 0 0 1-2.66 2.6 2.66 2.66 0 1 1 0-5.32c.28 0 .55.04.8.12V9.4a5.8 5.8 0 0 0-.8-.06 5.72 5.72 0 1 0 5.72 5.72V8.9a7.6 7.6 0 0 0 4.06 1.16V6.96a4.6 4.6 0 0 1-2.8-1.14z" opacity="0.9"/></svg>
+          <span class="btn-text">TikTok<small>@7ldack</small></span>
+        </a>
+        <a class="btn btn-twitch" href="https://www.twitch.tv/alexsandr_brooo/about" target="_blank">
+          <svg viewBox="0 0 24 24"><path fill="#fff" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+          <span class="btn-text">Twitch<small>Стримы</small></span>
+        </a>
+        <a class="btn btn-tg" href="https://t.me/+yoidrxO2Gzo0MGIy" target="_blank">
+          <svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="120" fill="#fff" opacity="0.2"/><path fill="#fff" d="M54.3 118.7l112.8-43.5c5.2-1.9 9.7 1.3 8 9.6l-19.2 90.4c-1.4 6.6-5.4 8.2-10.9 5.1l-30.2-22.3-14.6 14c-1.6 1.6-3 3-6.1 3l2.2-31 56.4-50.9c2.4-2.2-.5-3.4-3.8-1.2l-69.7 43.9-30-9.4c-6.5-2-6.6-6.5 1.1-8.7z"/></svg>
+          <span class="btn-text">Telegram<small>Мой канал</small></span>
+        </a>
+        <a class="btn btn-donate" href="https://www.donationalerts.com/r/sliva_sanich" target="_blank">
+          <img src="https://habrastorage.org/webt/8i/5l/wo/8i5lwoq-mzzvqj6mdamccfqexwq.png" alt="Донат">
+          <span class="btn-text">Поддержать (Донат)<small>DonationAlerts</small></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА 2: ИНФОРМАЦИЯ -->
+    <div id="info" class="tab-content">
+      <div class="info-text">
+        <p>Привет! Меня зовут <strong>Александр</strong>. Добро пожаловать на мой сайт.</p>
+        <p>Здесь вы можете найти ссылки на мои соцсети. Подписывайтесь на TikTok, Twitch и Telegram!</p>
+        <p>А во вкладке «Вопрос» вы можете написать мне анонимно.</p>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА 3: ЧТО СНИМАЮ -->
+    <div id="content" class="tab-content">
+      <div class="info-text"><p>Я снимаю видео про <strong>Дроны в Roblox</strong> (Drone War) и играю в <strong>Rust</strong> на сервере AqruxRust.</p></div>
+      <a class="btn btn-roblox" href="https://www.roblox.com/share?code=358b8e7040057641b25942ac96305560&type=ExperienceDetails&stamp=1794076841548" target="_blank" style="margin-bottom:12px;">
+        <span class="btn-text" style="align-items:center;">Играть в Drone War</span>
+      </a>
+      <a class="btn btn-rust" href="https://ru.aqruxrust.gg/" target="_blank">
+        <span class="btn-text" style="align-items:center;">Сервер AqruxRust</span>
+      </a>
+    </div>
+
+    <!-- ВКЛАДКА 4: ЗАДАТЬ ВОПРОС -->
+    <div id="ask" class="tab-content">
+      <div class="info-text">
+        <p>Хочешь что-то спросить или предложить? Пиши! Твоё сообщение придет мне напрямую в Telegram.</p>
+      </div>
+      
+      <form class="question-form" id="tgForm" onsubmit="sendMessage(event)">
+        
+        <div class="random-nick-box">
+          Твой случайный ник: <strong id="nickname">Гость_0000</strong>
+        </div>
+
+        <textarea id="questionText" placeholder="Напиши свой вопрос сюда..." required></textarea>
+        
+        <button type="submit" class="submit-btn" id="sendBtn">Отправить в Telegram</button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer>© 2026 Александр Бро</footer>
+
+  <script>
+    // 1. Генерация случайного ника
+    function generateNick() {
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('nickname').innerText = 'Гость_' + randomNum;
+    }
+    window.onload = generateNick;
+
+    // 2. Настройки Telegram Бота (ВСТАВЛЕНЫ ТВОИ ДАННЫЕ)
+    const TG_TOKEN = '9087279004:AAHpYqosNFaWza9JV08Ok12YwSpcCFNQhTA';
+    const TG_CHAT_ID = '6474419939'; 
+
+    // 3. Отправка сообщения
+    async function sendMessage(event) {
+      event.preventDefault(); // Останавливаем перезагрузку страницы
+      
+      const btn = document.getElementById('sendBtn');
+      const textInput = document.getElementById('questionText');
+      const nick = document.getElementById('nickname').innerText;
+      
+      const message = `📩 *Новый вопрос на сайте!*\n\n👤 От: *${nick}*\n💬 Текст: ${textInput.value}`;
+      const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+      btn.innerText = 'Отправка...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TG_CHAT_ID,
+            text: message,
+            parse_mode: 'Markdown'
+          })
+        });
+
+        if (response.ok) {
+          btn.innerText = 'Отправлено! ✅';
+          btn.style.background = '#28a745';
+          textInput.value = '';
+          generateNick(); // Меняем ник после отправки
+          
+          setTimeout(() => {
+            btn.innerText = 'Отправить в Telegram';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 3000);
+        } else {
+          throw new Error('Ошибка отправки');
+        }
+      } catch (error) {
+        btn.innerText = 'Ошибка ❌';
+        btn.style.background = '#dc3545';
+        setTimeout(() => {
+          btn.innerText = 'Отправить в Telegram';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }
+    }
+
+    // Переключение вкладок
+    function openTab(tabName, btn) {
+      let i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
+      tablinks = document.getElementsByClassName("nav-btn");
+      for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+      document.getElementById(tabName).classList.add("active");
+      btn.classList.add("active");
+    }
+  </script>
+</body>
+</html>
