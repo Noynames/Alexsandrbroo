@@ -20,7 +20,6 @@
       position: relative;
       overflow-x: hidden;
       
-      /* ПЕРЕЛИВАЮЩИЙСЯ ГРАДИЕНТ */
       background: linear-gradient(-45deg, #2b1055, #753a88, #c4348c, #ff4b8b);
       background-size: 300% 300%;
       animation: gradientBG 8s ease infinite;
@@ -32,7 +31,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* --- ВЕРХНЯЯ ПАНЕЛЬ С АВАТАРКОЙ И СТАТУСОМ --- */
+    /* --- ВЕРХНЯЯ ПАНЕЛЬ (АВАТАРКА + СТАТУС + ЛАЙКИ) --- */
     .header-profile {
       display: flex;
       flex-direction: column;
@@ -42,7 +41,6 @@
       z-index: 2;
     }
 
-    /* Гифка-аватарка */
     .avatar-container {
       width: 100px;
       height: 100px;
@@ -58,18 +56,18 @@
     .avatar-frame {
       width: 100%;
       height: 100%;
-      background-size: 300% 100%; /* Картинки склеены в 3 кадра */
+      background-size: 300% 100%;
       background-position: 0% 50%;
-      animation: blinkAnimation 3s infinite steps(1); /* Анимация моргания */
+      animation: blinkAnimation 3s infinite steps(1);
     }
 
     @keyframes blinkAnimation {
-      0%, 80% { background-position: 0% 50%; } /* Открытые глаза (кадр 1) */
-      85%, 90% { background-position: 50% 50%; } /* Закрытые глаза (кадр 2) */
-      95%, 100% { background-position: 100% 50%; } /* Открытые глаза (кадр 3) */
+      0%, 80% { background-position: 0% 50%; }
+      85%, 90% { background-position: 50% 50%; }
+      95%, 100% { background-position: 100% 50%; }
     }
 
-    /* Плашка Twitch статуса */
+    /* Плашка Twitch */
     .twitch-status {
       display: inline-flex;
       align-items: center;
@@ -79,29 +77,26 @@
       border-radius: 20px;
       text-decoration: none;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
+      margin-bottom: 10px;
     }
 
-    .twitch-status:hover {
-      transform: scale(1.05);
-      background: rgba(145, 70, 255, 0.8);
-    }
+    .twitch-status:hover { transform: scale(1.05); }
 
     .status-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background-color: #888; /* По умолчанию офлайн */
+      background-color: #888;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
-      transition: background-color 0.3s;
     }
 
     .status-dot.online {
-      background-color: #ff4b4b; /* Красный, если онлайн */
+      background-color: #ff4b4b;
       box-shadow: 0 0 10px #ff4b4b;
       animation: pulse 1.5s infinite;
     }
@@ -112,7 +107,45 @@
       100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
     }
 
-    /* --- НАВИГАЦИЯ СВЕРХУ --- */
+    /* --- БЛОК ЛАЙКОВ --- */
+    .like-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .like-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .like-btn:hover { transform: scale(1.2); }
+    .like-btn.liked { animation: heartBoom 0.5s ease; }
+
+    @keyframes heartBoom {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+
+    .like-count {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    /* --- НАВИГАЦИЯ --- */
     .nav-tabs {
       display: flex;
       gap: 8px;
@@ -123,7 +156,6 @@
       padding: 6px;
       border-radius: 14px;
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       flex-wrap: wrap;
       justify-content: center;
@@ -136,7 +168,6 @@
       color: rgba(255, 255, 255, 0.7);
       font-size: 0.9rem;
       font-weight: 600;
-      font-family: inherit;
       padding: 10px 15px;
       border-radius: 10px;
       cursor: pointer;
@@ -144,7 +175,6 @@
     }
 
     .nav-btn:hover { color: #fff; }
-
     .nav-btn.active {
       background: rgba(255, 255, 255, 0.25);
       color: #fff;
@@ -157,7 +187,6 @@
       background: rgba(15, 15, 25, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-radius: 24px;
       padding: 30px 28px;
       max-width: 460px;
@@ -165,62 +194,26 @@
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
     }
     
-    h1 {
-      font-size: 2rem;
-      line-height: 1.15;
-      margin-bottom: 5px;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
+    h1 { font-size: 2rem; line-height: 1.15; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .subtitle { font-size: 0.95rem; opacity: 0.9; margin-bottom: 25px; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
 
-    .subtitle {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      margin-bottom: 25px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    }
-
-    /* --- ВКЛАДКИ --- */
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     /* --- ФОРМА ВОПРОСОВ --- */
     .question-form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
-    .random-nick-box {
-      background: rgba(255,255,255,0.1); padding: 12px; border-radius: 10px;
-      font-size: 0.9rem; border: 1px dashed rgba(255,255,255,0.3); margin-bottom: 5px;
-    }
+    .random-nick-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; font-size: 0.9rem; border: 1px dashed rgba(255,255,255,0.3); margin-bottom: 5px; }
     .random-nick-box strong { color: #25F4EE; }
-    .question-form textarea {
-      width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.3); color: #fff; font-family: inherit; font-size: 0.95rem;
-      resize: vertical; min-height: 100px; outline: none; transition: border 0.3s;
-    }
+    .question-form textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-family: inherit; resize: vertical; min-height: 100px; outline: none; }
     .question-form textarea:focus { border-color: #c4348c; }
-    .submit-btn {
-      background: linear-gradient(135deg, #229ED9, #1b87bb); color: #fff; border: none;
-      padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 24px rgba(34,158,217,0.4);
-    }
-    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(34,158,217,0.6); }
-    .submit-btn:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+    .submit-btn { background: linear-gradient(135deg, #229ED9, #1b87bb); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+    .submit-btn:hover { transform: translateY(-2px); }
+    .submit-btn:disabled { background: #555; cursor: not-allowed; }
 
-    /* --- КНОПКИ СОЦСЕТЕЙ --- */
+    /* --- КНОПКИ --- */
     .links { display: flex; flex-direction: column; gap: 12px; }
-    .btn {
-      display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 20px;
-      font-size: 1.05rem; font-weight: 600; color: #fff; text-decoration: none;
-      border-radius: 14px; transition: transform 0.15s, box-shadow 0.2s;
-      text-align: left; position: relative; overflow: hidden;
-    }
+    .btn { display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 600; color: #fff; text-decoration: none; border-radius: 14px; transition: transform 0.15s; text-align: left; }
     .btn:hover { transform: translateY(-2px); }
     .btn svg, .btn img { width: 28px; height: 28px; flex-shrink: 0; object-fit: cover; }
     .btn-text { display: flex; flex-direction: column; }
@@ -249,21 +242,23 @@
 </head>
 <body>
 
-  <!-- АВАТАРКА И СТАТУС TWITCH -->
   <div class="header-profile">
     <div class="avatar-container">
-      <!-- Эта ссылка ведет на склейку из твоих 3 картинок -->
       <div class="avatar-frame" style="background-image: url('https://habrastorage.org/webt/ru/kq/bv/rukqbvsbw6vpvnvpmvptq7v9y-c.png');"></div>
     </div>
     
-    <!-- Ссылка на твой Twitch со статусом -->
     <a href="https://www.twitch.tv/alexsandr_brooo/about" target="_blank" class="twitch-status" id="twitchLink">
       <div class="status-dot" id="statusDot"></div>
       <span id="statusText">Проверка Twitch...</span>
     </a>
+
+    <!-- БЛОК ЛАЙКОВ -->
+    <div class="like-block">
+      <button class="like-btn" id="likeBtn" onclick="toggleLike()">🤍</button>
+      <span class="like-count" id="likeCount">0</span>
+    </div>
   </div>
 
-  <!-- ВЕРХНЕЕ МЕНЮ -->
   <div class="nav-tabs">
     <button class="nav-btn active" onclick="openTab('channels', this)">1. Каналы</button>
     <button class="nav-btn" onclick="openTab('info', this)">2. Инфо</button>
@@ -275,7 +270,7 @@
     <h1>Александр Бро</h1>
     <p class="subtitle">Официальный сайт</p>
 
-    <!-- ВКЛАДКА 1: КАНАЛЫ -->
+    <!-- ВКЛАДКИ -->
     <div id="channels" class="tab-content active">
       <div class="links">
         <a class="btn btn-tiktok" href="https://www.tiktok.com/@7ldack?_r=1&_t=ZS-9B84IYcGJJE" target="_blank">
@@ -297,7 +292,6 @@
       </div>
     </div>
 
-    <!-- ВКЛАДКА 2: ИНФОРМАЦИЯ -->
     <div id="info" class="tab-content">
       <div class="info-text">
         <p>Привет! Меня зовут <strong>Александр</strong>. Добро пожаловать на мой сайт.</p>
@@ -306,7 +300,6 @@
       </div>
     </div>
 
-    <!-- ВКЛАДКА 3: ЧТО СНИМАЮ -->
     <div id="content" class="tab-content">
       <div class="info-text"><p>Я снимаю видео про <strong>Дроны в Roblox</strong> (Drone War) и играю в <strong>Rust</strong> на сервере AqruxRust.</p></div>
       <a class="btn btn-roblox" href="https://www.roblox.com/share?code=358b8e7040057641b25942ac96305560&type=ExperienceDetails&stamp=1794076841548" target="_blank" style="margin-bottom:12px;">
@@ -317,110 +310,128 @@
       </a>
     </div>
 
-    <!-- ВКЛАДКА 4: ЗАДАТЬ ВОПРОС -->
     <div id="ask" class="tab-content">
-      <div class="info-text">
-        <p>Хочешь что-то спросить или предложить? Пиши! Твоё сообщение придет мне напрямую в Telegram.</p>
-      </div>
-      
+      <div class="info-text"><p>Хочешь что-то спросить или предложить? Пиши! Твоё сообщение придет мне напрямую в Telegram.</p></div>
       <form class="question-form" id="tgForm" onsubmit="sendMessage(event)">
-        <div class="random-nick-box">
-          Твой случайный ник: <strong id="nickname">Гость_0000</strong>
-        </div>
+        <div class="random-nick-box">Твой случайный ник: <strong id="nickname">Гость_0000</strong></div>
         <textarea id="questionText" placeholder="Напиши свой вопрос сюда..." required></textarea>
         <button type="submit" class="submit-btn" id="sendBtn">Отправить в Telegram</button>
       </form>
     </div>
-
   </main>
 
   <footer>© 2026 Александр Бро</footer>
 
   <script>
-    // 1. Генерация случайного ника
+    // 1. Никнейм
     function generateNick() {
       const randomNum = Math.floor(1000 + Math.random() * 9000);
       document.getElementById('nickname').innerText = 'Гость_' + randomNum;
     }
     window.onload = generateNick;
 
-    // 2. Настройки Telegram Бота
+    // 2. ТЕЛЕГРАМ БОТ
     const TG_TOKEN = '9087279004:AAHpYqosNFaWza9JV08Ok12YwSpcCFNQhTA';
     const TG_CHAT_ID = '6474419939'; 
 
-    // 3. Отправка сообщения в Telegram
     async function sendMessage(event) {
       event.preventDefault();
       const btn = document.getElementById('sendBtn');
       const textInput = document.getElementById('questionText');
       const nick = document.getElementById('nickname').innerText;
-      
       const message = `📩 *Новый вопрос на сайте!*\n\n👤 От: *${nick}*\n💬 Текст: ${textInput.value}`;
-      const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
-
-      btn.innerText = 'Отправка...';
-      btn.disabled = true;
+      
+      btn.innerText = 'Отправка...'; btn.disabled = true;
 
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message, parse_mode: 'Markdown' })
         });
-
         if (response.ok) {
-          btn.innerText = 'Отправлено! ✅';
-          btn.style.background = '#28a745';
-          textInput.value = '';
-          generateNick();
-          setTimeout(() => {
-            btn.innerText = 'Отправить в Telegram';
-            btn.style.background = '';
-            btn.disabled = false;
-          }, 3000);
-        } else { throw new Error('Ошибка'); }
+          btn.innerText = 'Отправлено! ✅'; btn.style.background = '#28a745';
+          textInput.value = ''; generateNick();
+          setTimeout(() => { btn.innerText = 'Отправить в Telegram'; btn.style.background = ''; btn.disabled = false; }, 3000);
+        } else { throw new Error(); }
       } catch (error) {
-        btn.innerText = 'Ошибка ❌';
-        btn.style.background = '#dc3545';
-        setTimeout(() => {
-          btn.innerText = 'Отправить в Telegram';
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 3000);
+        btn.innerText = 'Ошибка ❌'; btn.style.background = '#dc3545';
+        setTimeout(() => { btn.innerText = 'Отправить в Telegram'; btn.style.background = ''; btn.disabled = false; }, 3000);
       }
     }
 
-    // 4. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+    // 3. ВКЛАДКИ
     function openTab(tabName, btn) {
-      let i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tab-content");
+      let i, tabcontent = document.getElementsByClassName("tab-content");
       for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
-      tablinks = document.getElementsByClassName("nav-btn");
+      let tablinks = document.getElementsByClassName("nav-btn");
       for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
       document.getElementById(tabName).classList.add("active");
       btn.classList.add("active");
     }
 
-    // 5. ПРОВЕРКА СТАТУСА TWITCH (Имитация)
-    // ВАЖНО: Для реальной проверки нужен токен Twitch API. 
-    // Сейчас тут стоит небольшая задержка и случайный выбор (для теста).
-    // Чтобы сделать реальную проверку, нужен запрос к Twitch API (я могу показать как, если нужно).
+    // 4. СТАТУС TWITCH (Имитация)
     setTimeout(() => {
       const dot = document.getElementById('statusDot');
       const text = document.getElementById('statusText');
-      
-      // ДЛЯ ТЕСТА: случайно показывает Онлайн или Офлайн
-      // В реальности тут должен быть запрос к API
       const isOnline = Math.random() > 0.5; 
-      
-      if (isOnline) {
-        dot.classList.add('online');
-        text.innerText = 'Сейчас в эфире';
-      } else {
-        dot.classList.remove('online');
-        text.innerText = 'Офлайн (Twitch)';
+      if (isOnline) { dot.classList.add('online'); text.innerText = 'Сейчас в эфире'; } 
+      else { dot.classList.remove('online'); text.innerText = 'Офлайн (Twitch)'; }
+    }, 1000);
+
+    // 5. СИСТЕМА ЛАЙКОВ С БАЗОЙ ДАННЫХ (CountAPI)
+    // Этот сервис бесплатно хранит цифры на своем сервере.
+    const apiKey = 'alexander_bro_site_likes_v1'; // Уникальный ключ для твоего сайта
+    const likeBtn = document.getElementById('likeBtn');
+    const likeCountEl = document.getElementById('likeCount');
+
+    // Функция для получения текущего количества лайков
+    async function getLikes() {
+      try {
+        const res = await fetch(`https://api.countapi.xyz/get/${apiKey}`);
+        const data = await res.json();
+        likeCountEl.innerText = data.value;
+      } catch (e) {
+        likeCountEl.innerText = '0'; // Если сервис недоступен
       }
-    }, 1500); // Задержка для эффекта загрузки
+    }
+
+    // Функция для добавления лайка
+    async function toggleLike() {
+      // Проверяем, не лайкал ли уже этот пользователь (сохраняем в его браузере)
+      if (localStorage.getItem('hasLiked')) {
+        likeBtn.innerText = '❤️';
+        alert('Ты уже ставил лайк! Спасибо! 😎');
+        return;
+      }
+
+      // Визуальный эффект
+      likeBtn.innerText = '❤️';
+      likeBtn.classList.add('liked');
+      localStorage.setItem('hasLiked', 'true'); // Запоминаем, что лайкнул
+
+      try {
+        // Отправляем запрос на увеличение счетчика на 1
+        const res = await fetch(`https://api.countapi.xyz/hit/${apiKey}`);
+        const data = await res.json();
+        likeCountEl.innerText = data.value;
+      } catch (e) {
+        console.log('Ошибка лайка');
+      }
+    }
+
+    // Проверяем, лайкал ли уже пользователь при загрузке
+    function checkLikedStatus() {
+      if (localStorage.getItem('hasLiked')) {
+        likeBtn.innerText = '❤️';
+      }
+    }
+
+    // Запускаем при загрузке страницы
+    window.addEventListener('DOMContentLoaded', () => {
+      getLikes();
+      checkLikedStatus();
+    });
   </script>
 </body>
 </html>
