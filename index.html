@@ -32,6 +32,86 @@
       100% { background-position: 0% 50%; }
     }
 
+    /* --- ВЕРХНЯЯ ПАНЕЛЬ С АВАТАРКОЙ И СТАТУСОМ --- */
+    .header-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Гифка-аватарка */
+    .avatar-container {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      background-color: #fff;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .avatar-frame {
+      width: 100%;
+      height: 100%;
+      background-size: 300% 100%; /* Картинки склеены в 3 кадра */
+      background-position: 0% 50%;
+      animation: blinkAnimation 3s infinite steps(1); /* Анимация моргания */
+    }
+
+    @keyframes blinkAnimation {
+      0%, 80% { background-position: 0% 50%; } /* Открытые глаза (кадр 1) */
+      85%, 90% { background-position: 50% 50%; } /* Закрытые глаза (кадр 2) */
+      95%, 100% { background-position: 100% 50%; } /* Открытые глаза (кадр 3) */
+    }
+
+    /* Плашка Twitch статуса */
+    .twitch-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 15, 25, 0.7);
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .twitch-status:hover {
+      transform: scale(1.05);
+      background: rgba(145, 70, 255, 0.8);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #888; /* По умолчанию офлайн */
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      transition: background-color 0.3s;
+    }
+
+    .status-dot.online {
+      background-color: #ff4b4b; /* Красный, если онлайн */
+      box-shadow: 0 0 10px #ff4b4b;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(255, 75, 75, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
+    }
+
     /* --- НАВИГАЦИЯ СВЕРХУ --- */
     .nav-tabs {
       display: flex;
@@ -79,7 +159,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 24px;
-      padding: 34px 28px;
+      padding: 30px 28px;
       max-width: 460px;
       width: 100%;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
@@ -88,7 +168,7 @@
     h1 {
       font-size: 2rem;
       line-height: 1.15;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       letter-spacing: -0.5px;
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
@@ -112,66 +192,28 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- СТИЛИ ДЛЯ ФОРМЫ ВОПРОСОВ --- */
-    .question-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      text-align: left;
-    }
-    
+    /* --- ФОРМА ВОПРОСОВ --- */
+    .question-form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
     .random-nick-box {
-      background: rgba(255,255,255,0.1);
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      border: 1px dashed rgba(255,255,255,0.3);
-      margin-bottom: 5px;
+      background: rgba(255,255,255,0.1); padding: 12px; border-radius: 10px;
+      font-size: 0.9rem; border: 1px dashed rgba(255,255,255,0.3); margin-bottom: 5px;
     }
     .random-nick-box strong { color: #25F4EE; }
-
     .question-form textarea {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.3);
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.95rem;
-      resize: vertical;
-      min-height: 100px;
-      outline: none;
-      transition: border 0.3s;
+      width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.3); color: #fff; font-family: inherit; font-size: 0.95rem;
+      resize: vertical; min-height: 100px; outline: none; transition: border 0.3s;
     }
-    .question-form textarea:focus {
-      border-color: #c4348c;
-    }
-    
+    .question-form textarea:focus { border-color: #c4348c; }
     .submit-btn {
-      background: linear-gradient(135deg, #229ED9, #1b87bb);
-      color: #fff;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 8px 24px rgba(34,158,217,0.4);
+      background: linear-gradient(135deg, #229ED9, #1b87bb); color: #fff; border: none;
+      padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 24px rgba(34,158,217,0.4);
     }
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(34,158,217,0.6);
-    }
-    .submit-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(34,158,217,0.6); }
+    .submit-btn:disabled { background: #555; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* Кнопки соцсетей */
+    /* --- КНОПКИ СОЦСЕТЕЙ --- */
     .links { display: flex; flex-direction: column; gap: 12px; }
     .btn {
       display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 20px;
@@ -201,10 +243,25 @@
       .card { padding: 25px 18px; }
       h1 { font-size: 1.8rem; }
       .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
+      .avatar-container { width: 80px; height: 80px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- АВАТАРКА И СТАТУС TWITCH -->
+  <div class="header-profile">
+    <div class="avatar-container">
+      <!-- Эта ссылка ведет на склейку из твоих 3 картинок -->
+      <div class="avatar-frame" style="background-image: url('https://habrastorage.org/webt/ru/kq/bv/rukqbvsbw6vpvnvpmvptq7v9y-c.png');"></div>
+    </div>
+    
+    <!-- Ссылка на твой Twitch со статусом -->
+    <a href="https://www.twitch.tv/alexsandr_brooo/about" target="_blank" class="twitch-status" id="twitchLink">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Проверка Twitch...</span>
+    </a>
+  </div>
 
   <!-- ВЕРХНЕЕ МЕНЮ -->
   <div class="nav-tabs">
@@ -267,13 +324,10 @@
       </div>
       
       <form class="question-form" id="tgForm" onsubmit="sendMessage(event)">
-        
         <div class="random-nick-box">
           Твой случайный ник: <strong id="nickname">Гость_0000</strong>
         </div>
-
         <textarea id="questionText" placeholder="Напиши свой вопрос сюда..." required></textarea>
-        
         <button type="submit" class="submit-btn" id="sendBtn">Отправить в Telegram</button>
       </form>
     </div>
@@ -290,14 +344,13 @@
     }
     window.onload = generateNick;
 
-    // 2. Настройки Telegram Бота (ВСТАВЛЕНЫ ТВОИ ДАННЫЕ)
+    // 2. Настройки Telegram Бота
     const TG_TOKEN = '9087279004:AAHpYqosNFaWza9JV08Ok12YwSpcCFNQhTA';
     const TG_CHAT_ID = '6474419939'; 
 
-    // 3. Отправка сообщения
+    // 3. Отправка сообщения в Telegram
     async function sendMessage(event) {
-      event.preventDefault(); // Останавливаем перезагрузку страницы
-      
+      event.preventDefault();
       const btn = document.getElementById('sendBtn');
       const textInput = document.getElementById('questionText');
       const nick = document.getElementById('nickname').innerText;
@@ -312,27 +365,20 @@
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TG_CHAT_ID,
-            text: message,
-            parse_mode: 'Markdown'
-          })
+          body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message, parse_mode: 'Markdown' })
         });
 
         if (response.ok) {
           btn.innerText = 'Отправлено! ✅';
           btn.style.background = '#28a745';
           textInput.value = '';
-          generateNick(); // Меняем ник после отправки
-          
+          generateNick();
           setTimeout(() => {
             btn.innerText = 'Отправить в Telegram';
             btn.style.background = '';
             btn.disabled = false;
           }, 3000);
-        } else {
-          throw new Error('Ошибка отправки');
-        }
+        } else { throw new Error('Ошибка'); }
       } catch (error) {
         btn.innerText = 'Ошибка ❌';
         btn.style.background = '#dc3545';
@@ -344,7 +390,7 @@
       }
     }
 
-    // Переключение вкладок
+    // 4. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
     function openTab(tabName, btn) {
       let i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tab-content");
@@ -354,6 +400,27 @@
       document.getElementById(tabName).classList.add("active");
       btn.classList.add("active");
     }
+
+    // 5. ПРОВЕРКА СТАТУСА TWITCH (Имитация)
+    // ВАЖНО: Для реальной проверки нужен токен Twitch API. 
+    // Сейчас тут стоит небольшая задержка и случайный выбор (для теста).
+    // Чтобы сделать реальную проверку, нужен запрос к Twitch API (я могу показать как, если нужно).
+    setTimeout(() => {
+      const dot = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+      
+      // ДЛЯ ТЕСТА: случайно показывает Онлайн или Офлайн
+      // В реальности тут должен быть запрос к API
+      const isOnline = Math.random() > 0.5; 
+      
+      if (isOnline) {
+        dot.classList.add('online');
+        text.innerText = 'Сейчас в эфире';
+      } else {
+        dot.classList.remove('online');
+        text.innerText = 'Офлайн (Twitch)';
+      }
+    }, 1500); // Задержка для эффекта загрузки
   </script>
 </body>
 </html>
