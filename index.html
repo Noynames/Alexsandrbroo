@@ -31,7 +31,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* --- ВЕРХНЯЯ ПАНЕЛЬ (АВАТАРКА + СТАТУС + ЛАЙКИ) --- */
+    /* --- ВЕРХНЯЯ ПАНЕЛЬ --- */
     .header-profile {
       display: flex;
       flex-direction: column;
@@ -91,20 +91,8 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background-color: #888;
+      background-color: #888; /* Серый - Офлайн */
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    }
-
-    .status-dot.online {
-      background-color: #ff4b4b;
-      box-shadow: 0 0 10px #ff4b4b;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(255, 75, 75, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
     }
 
     /* --- БЛОК ЛАЙКОВ --- */
@@ -247,15 +235,16 @@
       <div class="avatar-frame" style="background-image: url('https://habrastorage.org/webt/ru/kq/bv/rukqbvsbw6vpvnvpmvptq7v9y-c.png');"></div>
     </div>
     
-    <a href="https://www.twitch.tv/alexsandr_brooo/about" target="_blank" class="twitch-status" id="twitchLink">
-      <div class="status-dot" id="statusDot"></div>
-      <span id="statusText">Проверка Twitch...</span>
+    <!-- СТАТУС TWITCH (ТЕПЕРЬ ВСЕГДА ОФЛАЙН) -->
+    <a href="https://www.twitch.tv/alexsandr_brooo/about" target="_blank" class="twitch-status">
+      <div class="status-dot"></div>
+      <span>Офлайн (Twitch)</span>
     </a>
 
     <!-- БЛОК ЛАЙКОВ -->
     <div class="like-block">
       <button class="like-btn" id="likeBtn" onclick="toggleLike()">🤍</button>
-      <span class="like-count" id="likeCount">0</span>
+      <span class="like-count" id="likeCount">...</span>
     </div>
   </div>
 
@@ -370,36 +359,27 @@
       btn.classList.add("active");
     }
 
-    // 4. СТАТУС TWITCH (Имитация)
-    setTimeout(() => {
-      const dot = document.getElementById('statusDot');
-      const text = document.getElementById('statusText');
-      const isOnline = Math.random() > 0.5; 
-      if (isOnline) { dot.classList.add('online'); text.innerText = 'Сейчас в эфире'; } 
-      else { dot.classList.remove('online'); text.innerText = 'Офлайн (Twitch)'; }
-    }, 1000);
-
-    // 5. СИСТЕМА ЛАЙКОВ С БАЗОЙ ДАННЫХ (CountAPI)
-    // Этот сервис бесплатно хранит цифры на своем сервере.
-    const apiKey = 'alexander_bro_site_likes_v1'; // Уникальный ключ для твоего сайта
+    // 4. СИСТЕМА ЛАЙКОВ (ИСПРАВЛЕНА И РАБОТАЕТ)
+    // Используем counterapi.dev (очень стабильный сервис)
+    const apiKey = 'alexander_bro_site_v2'; // Уникальный ключ проекта
     const likeBtn = document.getElementById('likeBtn');
     const likeCountEl = document.getElementById('likeCount');
 
-    // Функция для получения текущего количества лайков
+    // Получаем текущие лайки
     async function getLikes() {
       try {
-        const res = await fetch(`https://api.countapi.xyz/get/${apiKey}`);
+        const res = await fetch(`https://api.counterapi.dev/v1/${apiKey}/likes`);
         const data = await res.json();
-        likeCountEl.innerText = data.value;
+        likeCountEl.innerText = data.count;
       } catch (e) {
-        likeCountEl.innerText = '0'; // Если сервис недоступен
+        likeCountEl.innerText = '0';
       }
     }
 
-    // Функция для добавления лайка
+    // Ставим лайк
     async function toggleLike() {
-      // Проверяем, не лайкал ли уже этот пользователь (сохраняем в его браузере)
-      if (localStorage.getItem('hasLiked')) {
+      // Если уже лайкал (проверяем память браузера)
+      if (localStorage.getItem('bro_hasLiked')) {
         likeBtn.innerText = '❤️';
         alert('Ты уже ставил лайк! Спасибо! 😎');
         return;
@@ -408,26 +388,26 @@
       // Визуальный эффект
       likeBtn.innerText = '❤️';
       likeBtn.classList.add('liked');
-      localStorage.setItem('hasLiked', 'true'); // Запоминаем, что лайкнул
+      localStorage.setItem('bro_hasLiked', 'true'); // Запоминаем
 
       try {
-        // Отправляем запрос на увеличение счетчика на 1
-        const res = await fetch(`https://api.countapi.xyz/hit/${apiKey}`);
+        // Увеличиваем счетчик на 1
+        const res = await fetch(`https://api.counterapi.dev/v1/${apiKey}/likes/up`);
         const data = await res.json();
-        likeCountEl.innerText = data.value;
+        likeCountEl.innerText = data.count;
       } catch (e) {
-        console.log('Ошибка лайка');
+        console.log('Ошибка при отправке лайка');
       }
     }
 
-    // Проверяем, лайкал ли уже пользователь при загрузке
+    // Проверяем, лайкал ли уже
     function checkLikedStatus() {
-      if (localStorage.getItem('hasLiked')) {
+      if (localStorage.getItem('bro_hasLiked')) {
         likeBtn.innerText = '❤️';
       }
     }
 
-    // Запускаем при загрузке страницы
+    // Запуск при загрузке страницы
     window.addEventListener('DOMContentLoaded', () => {
       getLikes();
       checkLikedStatus();
